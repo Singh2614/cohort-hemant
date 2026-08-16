@@ -1,0 +1,40 @@
+body{
+    background-image: url(back.jpg);
+    background-size: 1250px;
+}
+h2{
+    text-align: center;
+}
+.button{
+    
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    
+    
+    
+    width: 100%;
+}
+.box{
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 9px;
+}
+#addbutton{
+    color:white;
+    background-color: #52749e;
+    font-weight: bold;
+
+    font-size: 14px;
+}
+#papa{
+    background-color: rgba(229, 199, 246, 0.5);
+    border-radius: 10px;
+    margin-top:10px;
+
+
+    margin-left:300px;
+    margin-right:300px;
+}

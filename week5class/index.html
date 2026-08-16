@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        function addfunction(){
+            const a=parseInt(document.getElementById("a").value);
+            const b=parseInt(document.getElementById("b").value);
+            axios.post("http://localhost:3000/sum", {
+                a: a,
+                b: b
+            })
+        }
+    </script>
+
+</head>
+
+<body>
+    <h1>Hello, World!</h1>
+    <input id="a" type="text" placeholder="Enter a">
+    <input id="b" type="text" placeholder="Enter b">
+    <button id="add" onclick="addfunction()">Add</button>
+</body>
+</html>

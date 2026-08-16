@@ -1,0 +1,48 @@
+body{
+    min-height: 100vh;
+    /* background-color: brown; */
+    text-align: center;
+   
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    
+}
+#one{
+    
+    /* background-color: rgb(113, 231, 77); */
+    width: 200px;
+    border-radius: 20px;
+    
+}
+#papa{
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    background-color: rgb(232, 134, 64);
+    width: 300px;
+    height:200px;
+    border-radius: 20px;
+}
+.box{
+    border: 0px;
+    border-radius: 10px;
+    height: 30px;
+    text-align: justify;
+    
+}
+.buttons{
+    border: 0px;
+    border-radius: 10px;
+    height: 30px;
+    width: 80px;
+    background-color: rgb(209, 34, 107);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.1s;
+}button:active {
+    opacity: 0.5;
+}

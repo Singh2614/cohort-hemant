@@ -10,6 +10,7 @@ const app=express();
 const jwt=require('jsonwebtoken');
 const JWT_SECRET='harikirat';
 const mongoose=require('mongoose');
+const bcrypt=require('bcrypt');
 mongoose.connect('mongodb+srv://hemant14:1A7EihqaZ6Z3tdpL@cluster0.bwzei7r.mongodb.net/hem-11');
 
 
@@ -18,11 +19,13 @@ app.use(express.json());
 app.post('/signin',async function(req,res){
     const username=req.body.username;
     const password=req.body.password;
+    
 
     const response=await UserModel.findOne({
         username:username,
-        password:password
+        
     })
+    const passwordMatch = await bcrypt.compare(password, user.password);
     if(response){
         //generate token
         const token=jwt.sign({
@@ -42,11 +45,14 @@ app.post('/signin',async function(req,res){
 app.post('/signup',async function(req,res){
     const username=req.body.username;
     const password=req.body.password;
+    //bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {  Store hash in your password DB.});
+    const hashed_password=await bcrypt.hash(password,6);
     const name=req.body.name;
 
     await UserModel.create({
         username:username,
-        password:password,
+        
+        password:hashed_password,//hash+salt
         name:name
     })
 
@@ -54,16 +60,56 @@ app.post('/signup',async function(req,res){
 
     
 })
-app.get('/me',function(req,res){
+app.get('/me',auth,async function(req,res){
+    const userid=req.lambda;
+    const value_u=await UserModel.findOne({
+        _id:userid
+    })
+    res.json(value_u);
     
 
 })
-app.post('/todo',function(req,res){
+function auth(req, res, next) {
+    const token = req.headers.token;
+
+    try {
+        const details = jwt.verify(token, JWT_SECRET);
+
+        req.lambda = details.id;
+
+        next();
+
+    } catch (err) {
+        res.status(403).json({
+            message: "gaand maar gyi lund k beej"
+        });
+    }
+}
+app.post('/todo',auth,async function(req,res){
+    //we will recieve a token and then we can go
+    const userid=req.lambda;
+    const value=await TodoModel.findOne({
+        user_id:userid
+    })
+    const discription=req.body.discription;
+    const status=req.body.status;
+    const user_id=req.body.user_id;
+    await TodoModel.create({
+        discription:discription,
+        status:status,
+        user_id:user_id
+    })
+    res.json("to do created")
     
 })
-app.get('/todos',function(req,res){
-    
+app.get('/todos',auth,async function(req,res){
+    const userid=req.lambda;
+    const value=await TodoModel.find({
+        user_id:userid
+    })
+    res.json(value)
 })
+
 app.listen(3001,()=>{
     console.log('3001 chalu hai')
 })

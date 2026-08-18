@@ -4,7 +4,7 @@
 // const JWT_SECRET = "s3cret";
 // const {UserModel,TodoModel} =require("./md");
 // const mongoose= require('mongoose');
-// mongoose.connect('mongodb+srv://hemant14:1A7EihqaZ6Z3tdpL@cluster0.bwzei7r.mongodb.net/hem-10');
+// mongoose.connect();
 
 // app.use(express.json());
 
@@ -76,7 +76,7 @@ const JWT_SECRET = "s3cret";
 const {UserModel,TodoModel} =require("./md");
 const mongoose= require('mongoose');
 
-mongoose.connect('mongodb+srv://hemant14:1A7EihqaZ6Z3tdpL@cluster0.bwzei7r.mongodb.net/hem-10');
+mongoose.connect('');
 
 app.use(express.json());
 

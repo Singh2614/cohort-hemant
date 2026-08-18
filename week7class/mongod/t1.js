@@ -11,7 +11,7 @@ const jwt=require('jsonwebtoken');
 const JWT_SECRET='harikirat';
 const mongoose=require('mongoose');
 const bcrypt=require('bcrypt');
-mongoose.connect('mongodb+srv://hemant14:1A7EihqaZ6Z3tdpL@cluster0.bwzei7r.mongodb.net/hem-11');
+mongoose.connect('');
 
 
 app.use(express.json());

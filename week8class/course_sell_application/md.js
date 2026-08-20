@@ -9,8 +9,11 @@ const user =new Schema({
 })
 
 const courses=new Schema({
+    title:String,
     discription:String,
-    user_id:ObjectId
+    price:Number,
+    image_url:string,
+    creater_id:ObjectId
 }) 
 const admin =new Schema({
     username:String,
@@ -18,6 +21,18 @@ const admin =new Schema({
     name:String
 })
 const purchase=new Schema({
-    discription:String,
-    user_id:ObjectId
+    
+    user_id:ObjectId,
+    courses_id:ObjectId
 }) 
+const UserModel=mongoose.model('user',user);
+const adminModel=mongoose.model('admin',admin);
+const CourseModel=mongoose.model('course',courses);
+const PurchaseModel=mongoose.model('purchase',purchase);
+
+module.exports={
+    UserModel:UserModel,
+    adminModel:adminModel,
+    CourseModel:CourseModel,
+    PurchaseModel:PurchaseModel
+}

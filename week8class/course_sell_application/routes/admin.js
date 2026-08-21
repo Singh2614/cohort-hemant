@@ -1,7 +1,16 @@
 const {Router}=require('express');
 const useadmin=Router();
-// admin routes
 
+const { adminauth } = require("../middlewares/admin");
+
+// Import the JWT Admin Password from the config file for verification
+const {JWT_SECRET_ADMIN} = require("../config");
+const {z} = require('zod');
+const bcrypt = require("bcrypt");
+ 
+const { CourseModel } = require('../md');
+const { adminModel } = require('../md');
+// admin routes
 useadmin.push('/adminlogin',async function(req,res){
     const requireBody=z.object({
         username:z.string().email().max(20).min(5),
@@ -28,7 +37,7 @@ useadmin.push('/adminlogin',async function(req,res){
                 //generate a token
                 const token=jwt.sign({
                     id:response._id.toString()
-                },JWT_SECRET);
+                },JWT_SECRET_ADMIN);
                 return res.json({token:token})
             }else{
                 return res.status(403).json({
@@ -85,12 +94,27 @@ useadmin.push('/adminsignup',async function(req,res){
     }
 });
 
-useadmin.delete('/remcourse',auth,function(req,res){
-    const 
+useadmin.delete('/remcourse',auth,async function(req,res){
+    const response = await CourseModel.deleteOne({
+        _id: courseId
+    }); 
 });
 
-useadmin.push('/addcourse',auth,function(req,res){
-    const 
+useadmin.push('/addcourse',auth,async function(req,res){
+    const admin_i=req.user;
+    const title=req.body.title;
+    const discription=req.body.discription;
+    const image_url=req.body.image_url;
+    const title=req.body.title;
+
+    await PurchaseModel.create({
+        title:title,
+        discription:discription,
+        price:price,
+        image_url:image_url,
+        creater_id:admin_i
+    })
+    req.json("course added");
 });
 
 module.exports={

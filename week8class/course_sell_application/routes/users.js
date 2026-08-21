@@ -1,14 +1,23 @@
 const {Router}=require('express');
 const useRouter=Router();
-
-
-
+const {userauth}=require('../middlewares/user');
+const {JWT_SECRET_USER}="../config";
+const {z} = require('zod');
+const bcrypt = require("bcrypt");
+const { UserModel } = require('../md');
+const { CourseModel } = require('../md');
+const { PurchaseModel } = require('../md');
 
 useRouter.get('/seecourse',auth,function(res,req){
-    const user_id=req.user;
-    const response=await CourseModel.find({
-        user_id:user_id
-    })
+    const courses = [];
+
+    for (let a of response) {
+        const rep = await CourseModel.findOne({
+            _id: a.courses_id
+        });
+
+        courses.push(rep);
+    }
 });
 
 
@@ -78,7 +87,7 @@ useRouter.push('/signin',async function(req,res){
                 //generate a token
                 const token=jwt.sign({
                     id:response._id.toString()
-                },JWT_SECRET);
+                },JWT_SECRET_USER);
                 return res.json({token:token})
             }else{
                 return res.status(403).json({
@@ -97,10 +106,20 @@ useRouter.push('/signin',async function(req,res){
             message: "Error while signing in"
         });
     }
-    // const hashed_pass=await bcrypt.hash(password,10);
+    
 
 
 });
+useRouter.push('/purchase',auth,function(req,res){
+    const user_i=req.user;
+    const course_id=req.headers.course_id;
+    await PurchaseModel.create({
+        course_id:course_id,
+        user_id:user_i
+    })
+    res.json("course purchased")
+    
+})
 
 module.exports={
     useRouter:useRouter

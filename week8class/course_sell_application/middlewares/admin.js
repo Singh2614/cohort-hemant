@@ -1,5 +1,5 @@
 const jwt=require('jsonwebtoken');
-const {JWT_SECRET_ADMIN}=require('./config');
+const { JWT_SECRET_ADMIN }=require('../config');
 
 function adminauth(req,res,next){
     const token=req.headers.token;
@@ -18,5 +18,5 @@ function adminauth(req,res,next){
     }
 }
 module.exports={
-    adminauth
+    adminauth,
 }

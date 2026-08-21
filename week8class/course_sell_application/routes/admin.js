@@ -4,14 +4,15 @@ const useadmin=Router();
 const { adminauth } = require("../middlewares/admin");
 
 // Import the JWT Admin Password from the config file for verification
-const {JWT_SECRET_ADMIN} = require("../config");
+const { JWT_SECRET_ADMIN } = require("../config");
+const jwt = require("jsonwebtoken");
 const {z} = require('zod');
 const bcrypt = require("bcrypt");
  
 const { CourseModel } = require('../md');
 const { adminModel } = require('../md');
 // admin routes
-useadmin.push('/adminlogin',async function(req,res){
+useadmin.post('/adminlogin',async function(req,res){
     const requireBody=z.object({
         username:z.string().email().max(20).min(5),
         password:z.string().max(20).min(6)
@@ -58,7 +59,7 @@ useadmin.push('/adminlogin',async function(req,res){
     }
     
 });
-useadmin.push('/adminsignup',async function(req,res){
+useadmin.post('/adminsignup',async function(req,res){
     try{
         const requireBody=z.object({
             username:z.string().min(5).max(20).email(),
@@ -94,27 +95,31 @@ useadmin.push('/adminsignup',async function(req,res){
     }
 });
 
-useadmin.delete('/remcourse',auth,async function(req,res){
+useadmin.delete('/remcourse',adminauth,async function(req,res){
+    const courseId=req.body.courseId;
     const response = await CourseModel.deleteOne({
         _id: courseId
     }); 
+    res.json({
+        message: "course deleted"
+    });
 });
 
-useadmin.push('/addcourse',auth,async function(req,res){
+useadmin.post('/addcourse',adminauth,async function(req,res){
     const admin_i=req.user;
     const title=req.body.title;
     const discription=req.body.discription;
     const image_url=req.body.image_url;
-    const title=req.body.title;
+    const price=req.body.price;
 
-    await PurchaseModel.create({
+    await CourseModel.create({
         title:title,
         discription:discription,
         price:price,
         image_url:image_url,
         creater_id:admin_i
     })
-    req.json("course added");
+    res.json("course added");
 });
 
 module.exports={

@@ -1,16 +1,21 @@
 const {Router}=require('express');
 const useRouter=Router();
 const {userauth}=require('../middlewares/user');
-const {JWT_SECRET_USER}="../config";
+const { JWT_SECRET_USER }=require("../config");
+const jwt = require("jsonwebtoken");
 const {z} = require('zod');
 const bcrypt = require("bcrypt");
 const { UserModel } = require('../md');
 const { CourseModel } = require('../md');
 const { PurchaseModel } = require('../md');
 
-useRouter.get('/seecourse',auth,function(res,req){
+useRouter.get('/seecourse',userauth,async function(req,res){
     const courses = [];
+    const user_id = req.user;
 
+    const response = await PurchaseModel.find({
+        user_id: user_id
+    });
     for (let a of response) {
         const rep = await CourseModel.findOne({
             _id: a.courses_id
@@ -18,11 +23,12 @@ useRouter.get('/seecourse',auth,function(res,req){
 
         courses.push(rep);
     }
+    res.send(courses);
 });
 
 
 
-useRouter.push('/signup',async function(req,res){
+useRouter.post('/signup',async function(req,res){
     //zod
     try{
         const requireBody=z.object({
@@ -61,7 +67,7 @@ useRouter.push('/signup',async function(req,res){
 });
 
 
-useRouter.push('/signin',async function(req,res){
+useRouter.post('/signin',async function(req,res){
     const requireBody=z.object({
         username:z.string().email().max(20).min(5),
         password:z.string().max(20).min(6)
@@ -110,7 +116,7 @@ useRouter.push('/signin',async function(req,res){
 
 
 });
-useRouter.push('/purchase',auth,function(req,res){
+useRouter.post('/purchase',userauth,async function(req,res){
     const user_i=req.user;
     const course_id=req.headers.course_id;
     await PurchaseModel.create({

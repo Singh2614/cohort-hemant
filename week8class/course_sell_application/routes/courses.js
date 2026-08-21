@@ -1,10 +1,10 @@
 const {Router}=require('express');
 const useCourses=Router();
-useCourses.push('/purchase',auth,function(req,res){
-    const user_id=req.user;
+useCourses.post('/purchase',async function(req,res){
+    
     await CourseModel.create({
         discription:req.body.discription,
-        user_id:user_id
+        
     })
     res.json({
         message:"course added"

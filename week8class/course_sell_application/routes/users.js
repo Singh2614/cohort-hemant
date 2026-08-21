@@ -16,6 +16,9 @@ useRouter.get('/seecourse',userauth,async function(req,res){
     const response = await PurchaseModel.find({
         user_id: user_id
     });
+    if (response.length === 0) {
+       return res.json("no course added yet");
+    }
     for (let a of response) {
         const rep = await CourseModel.findOne({
             _id: a.courses_id
@@ -24,6 +27,13 @@ useRouter.get('/seecourse',userauth,async function(req,res){
         courses.push(rep);
     }
     res.send(courses);
+});
+useRouter.get('/allcourses',userauth,async function(req,res){
+
+    const user_id = req.user;
+
+    const response = await CourseModel.find({});
+    res.send(response);
 });
 
 
@@ -118,9 +128,9 @@ useRouter.post('/signin',async function(req,res){
 });
 useRouter.post('/purchase',userauth,async function(req,res){
     const user_i=req.user;
-    const course_id=req.headers.course_id;
+    const courses_id=req.headers.courses_id;
     await PurchaseModel.create({
-        course_id:course_id,
+        courses_id:courses_id,
         user_id:user_i
     })
     res.json("course purchased")

@@ -97,9 +97,16 @@ useadmin.post('/adminsignup',async function(req,res){
 
 useadmin.delete('/remcourse',adminauth,async function(req,res){
     const courseId=req.body.courseId;
+    console.log("courseId:", courseId);
     const response = await CourseModel.deleteOne({
         _id: courseId
     }); 
+    console.log("courseId:", courseId);
+    if (response.deletedCount === 0) {
+        return res.status(404).json({
+            message: "Course not found"
+        });
+    }
     res.json({
         message: "course deleted"
     });
@@ -111,15 +118,25 @@ useadmin.post('/addcourse',adminauth,async function(req,res){
     const discription=req.body.discription;
     const image_url=req.body.image_url;
     const price=req.body.price;
-
+    console.log("yha pe");
     await CourseModel.create({
+        
         title:title,
         discription:discription,
         price:price,
         image_url:image_url,
         creater_id:admin_i
     })
+    console.log("yha nhi pe");
     res.json("course added");
+});
+useadmin.get('/showcourse',adminauth,async function(req,res){
+    const admin_i=req.user;
+
+    const response=await CourseModel.find({
+        creater_id:admin_i
+    })
+    res.json(response);
 });
 
 module.exports={

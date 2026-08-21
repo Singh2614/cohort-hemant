@@ -9,7 +9,7 @@ function adminauth(req,res,next){
         const details=jwt.verify(token,JWT_SECRET_ADMIN);
 
         req.user=details.id;
-        next
+        next();
     }
     catch(e){
         res.status(403).json({

@@ -9,7 +9,7 @@ function userauth(req,res,next){
         const details=jwt.verify(token,JWT_SECRET_USER);
 
         req.user=details.id;
-        next
+        next()
     }
     catch(e){
         res.status(403).json({

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<script>
+    function showSignup() {
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("home").style.display = "none";
+        document.getElementById("signupBox").style.display = "flex";
+    }
+
+    function showLogin() {
+        document.getElementById("signupBox").style.display = "none";
+        document.getElementById("loginBox").style.display = "flex";
+        document.getElementById("home").style.display = "none";
+    }
+    async function signup() {
+
+        const username =
+            document.getElementById("signupUsername").value;
+
+        const name =
+            document.getElementById("signupName").value;
+
+        const password =
+            document.getElementById("signupPassword").value;
+
+
+        const response = await fetch("http://localhost:3001/users/signup", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                username: username,
+                
+                password: password,
+                name: name,
+            })
+
+        });
+
+
+        const data = await response.json();
+
+        alert(data.message);
+    }async function login() {
+
+        const username =
+            document.getElementById("loginUsername").value;
+
+        const password =
+            document.getElementById("loginPassword").value;
+
+
+        const response = await fetch("http://localhost:3001/users/signin", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+
+        });
+        const data = await response.json();
+
+        alert(data.message);
+        if (data.token) {
+            // Login successful
+            window.location.href = "/front/home.html";
+        } else {
+            // Login failed
+            alert(data.message);
+        }
+
+
+        
+    }
+
+</script>
+<body>
+    <!-- top line -->
+    <div id="topline">
+        <div class="screenbutton">
+            Home
+            <div class="square"></div>
+        </div>
+        <div class="screenbutton">
+            Courses
+            <div class="square"></div>
+        </div>
+        <div class="screenbutton">
+            Blogs
+            <div class="square"></div>
+        </div>
+        <div class="screenbutton">
+            Support
+            <div class="square"></div>
+        </div>
+        <div class="screenbutton">
+            Contact Us
+            <div class="square"></div>
+        </div>
+    </div>
+    <h1>IITIAN MANOJ COURSES</h1>
+    <!-- LOGIN SCREEN -->
+     
+    <div id="loginBox" style="display: flex; justify-content: center;">
+
+        <div style="display: flex; flex-direction: column; width: 200px; align-items: center;">
+
+            <div style="font-size: x-large; font-weight: 500;">
+                Login
+            </div>
+
+            <div style="display: flex; flex-direction: column; margin-top: 20px;">
+                <input id="loginUsername" placeholder="Username">
+                <input id="loginPassword" placeholder="Password">
+            </div>
+
+            <div style="margin-top: 15px;">
+                Don't have account?
+                <span onclick="showSignup()" style="cursor: pointer; color: brown;">
+                    Signup
+                </span>
+            </div>
+
+            <button style="margin-top: 20px;"  onclick="login()">
+                Login
+            </button>
+
+        </div>
+    </div>
+
+
+    <!-- SIGNUP SCREEN -->
+    <div id="signupBox" style="display: none; justify-content: center;">
+
+        <div style="display: flex; flex-direction: column; width: 200px; align-items: center;">
+
+            <div style="font-size: x-large; font-weight: 500;">
+                Signup
+            </div>
+
+            <div style="display: flex; flex-direction: column; margin-top: 20px;">
+                <input id="signupUsername" placeholder="Username">
+                <input id="signupPassword" placeholder="Password">
+                <input id="signupName" placeholder="Name">
+                
+            </div>
+
+            <div style="margin-top: 15px;">
+                Already have account?
+                <span onclick="showLogin()" style="cursor: pointer;color: brown;">
+                    Login
+                </span>
+            </div>
+
+            <button style="margin-top: 20px;"  onclick="signup()">
+                Signup
+            </button>
+
+        </div>
+    </div>
+
+
+
+</body>
+</html>

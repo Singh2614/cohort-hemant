@@ -1,4 +1,6 @@
 require("dotenv").config();
+const cors = require("cors");
+const path = require("path");
 const dns = require("dns");
 
 dns.setServers([
@@ -12,8 +14,9 @@ const jwt=require('jsonwebtoken');
 const {z} = require('zod');
 
 const MONGODB_URL = process.env.MONGODB_URL;
-
+app.use(cors());
 app.use(express.json());
+app.use("/front", express.static(path.join(__dirname, "../front")));
 const PORT = process.env.PORT || 3000;
 const { useRouter } = require('./routes/users');
 const { useCourses } = require('./routes/courses');

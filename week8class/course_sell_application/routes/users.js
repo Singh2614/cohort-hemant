@@ -122,9 +122,6 @@ useRouter.post('/signin',async function(req,res){
             message: "Error while signing in"
         });
     }
-    
-
-
 });
 useRouter.post('/purchase',userauth,async function(req,res){
     const user_i=req.user;

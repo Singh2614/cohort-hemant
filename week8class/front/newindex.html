@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login & Signup</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #141e30, #243b55);
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 350px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background: #243b55;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #141e30;
+        }
+
+        .switch {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .switch span {
+            color: blue;
+            cursor: pointer;
+        }
+
+        #signupBox {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- LOGIN -->
+
+        <div id="loginBox">
+
+            <h2>Login</h2>
+
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Enter Email"
+            >
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter Password"
+            >
+
+            <button onclick="login()">
+                Login
+            </button>
+
+            <div class="switch">
+                Don't have an account?
+                <span onclick="showSignup()">Signup</span>
+            </div>
+
+        </div>
+
+
+        <!-- SIGNUP -->
+
+        <div id="signupBox">
+
+            <h2>Signup</h2>
+
+            <input
+                type="text"
+                id="signupName"
+                placeholder="Enter Name"
+            >
+
+            <input
+                type="email"
+                id="signupEmail"
+                placeholder="Enter Email"
+            >
+
+            <input
+                type="password"
+                id="signupPassword"
+                placeholder="Enter Password"
+            >
+
+            <button onclick="signup()">
+                Signup
+            </button>
+
+            <div class="switch">
+                Already have an account?
+                <span onclick="showLogin()">Login</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        // Show Signup
+        function showSignup() {
+
+            document.getElementById("loginBox").style.display = "none";
+
+            document.getElementById("signupBox").style.display = "block";
+        }
+
+
+        // Show Login
+        function showLogin() {
+
+            document.getElementById("signupBox").style.display = "none";
+
+            document.getElementById("loginBox").style.display = "block";
+        }
+
+
+        // Signup
+        async function signup() {
+
+            const name =
+                document.getElementById("signupName").value;
+
+            const email =
+                document.getElementById("signupEmail").value;
+
+            const password =
+                document.getElementById("signupPassword").value;
+
+
+            const response = await fetch(
+                "http://localhost:5000/signup",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        password: password
+                    })
+                }
+            );
+
+
+            const data = await response.json();
+
+            alert(data.message);
+        }
+
+
+        // Login
+        async function login() {
+
+            const email =
+                document.getElementById("loginEmail").value;
+
+            const password =
+                document.getElementById("loginPassword").value;
+
+
+            const response = await fetch(
+                "http://localhost:5000/login",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                }
+            );
+
+
+            const data = await response.json();
+
+            alert(data.message);
+        }
+
+    </script>
+
+</body>
+</html>
